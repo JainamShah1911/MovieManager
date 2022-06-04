@@ -15,10 +15,10 @@ namespace MovieManager.Controllers
             _algoliaSearchService = algoliaSearchService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        [HttpPost]
+        public async Task<IActionResult> search(SearchRequestDto dto)
         {
-            var dto = new SearchRequestDto() { Top = 10, Skip = 0, Query = new Algolia.Search.Models.Search.Query() };
+            //var dto = new SearchRequestDto() { Top = 10, Skip = 50, Query = new Algolia.Search.Models.Search.Query() };
             var result = await _algoliaSearchService.SearchAsync(dto);
 
             return Ok(result);

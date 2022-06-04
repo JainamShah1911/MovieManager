@@ -1,53 +1,55 @@
 import React, { Component } from 'react';
-import { Button, Card, CardBody, CardImg, CardText, CardTitle, FormGroup } from 'reactstrap';
+import { Button, Card, CardBody, CardHeader, CardImg, CardText, CardTitle, FormGroup } from 'reactstrap';
+import {Img} from 'react-image'
+import DefaultImage from "../assets/Coming-Soon.jpg";
 
 export class Home extends Component {
   static displayName = Home.name;
 
   constructor(props) {
     super(props);
-    this.state = { forecasts: [], loading: true };
+    this.state = { movies: [], loading: true };
   }
 
   componentDidMount() {
-    this.populateWeatherData();
+    this.populateMovieData();
   }
 
   render() {
     return (
       <div className="container-fluid">
-        <div className="row">
-          <div className="col-sm-12 col-md-8">
-            <Card>
-              <div className="cardList">
-                {this.state.forecasts.length !== 0 ? (
-                  this.state.forecasts.map((card, key) => (
-                    <Card style={{ width: '18rem' }}>
-                      <CardImg variant="top" src="holder.js/100px180" />
-                      <CardBody>
-                        <CardTitle>Card Title</CardTitle>
-                        <CardText>
-                          Some quick example text to build on the card title and make up the bulk of
-                          the card's content.
-                        </CardText>
-                        <Button variant="primary">Go somewhere</Button>
-                      </CardBody>
-                    </Card>
-                  ))
-                ) : (
-                  <h1>Kart Eklenmemiş..</h1>
-                )}
-              </div>
-            </Card>
+          <div className="row cardList">
+            {this.state.movies.length !== 0 ? (
+              this.state.movies && this.state.movies.map((card, key) => (
+                <Card bg="dark" className='col-md-3' style={{ width: '18rem', padding: 0 }}>
+                  <CardHeader>{card.title}</CardHeader>
+                  <Img className="movieImage" src={[card.image, DefaultImage]} />
+                  <CardBody>
+                    <CardTitle></CardTitle>
+                    <CardText>
+
+                    </CardText>
+                    <div className='column '>
+                      <Button className='col-md-5 col-md-offset-1' variant="primary">View</Button>
+                      <Button className='col-md-5 col-md-offset-1' variant="primary">Edit</Button>
+                    </div>
+                  </CardBody>
+                </Card>
+              ))
+            ) : (
+              <h1>Loading...</h1>
+            )}
           </div>
         </div>
-      </div>
     );
   }
 
-  async populateWeatherData() {
-    const response = await fetch('search');
+  async populateMovieData() {
+    const response = await fetch('search', {method: 'POST', body: '{ "skip": "100", "top": "30" }',headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+  },});
     const data = await response.json();
-    this.setState({ forecasts: data, loading: false });
+    this.setState({ movies: data.hits, loading: false });
   }
 }

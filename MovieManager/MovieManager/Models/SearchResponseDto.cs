@@ -2,6 +2,6 @@
 {
     public class SearchResponseDto
     {
-        public List<object> hits { get; set; }
+        public List<Movie> hits { get; set; }
     }
 }

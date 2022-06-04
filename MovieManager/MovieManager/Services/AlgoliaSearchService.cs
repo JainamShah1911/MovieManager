@@ -25,7 +25,7 @@ namespace MovieManager.Services
             dto.Query.Offset = dto.Skip;
             try
             {
-                var response = await index.SearchAsync<object>(dto.Query);
+                var response = await index.SearchAsync<Movie>(dto.Query);
                 return new SearchResponseDto()
                 {
                     hits = response.Hits
