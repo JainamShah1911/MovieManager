@@ -20,6 +20,10 @@ code {
   align-self: center;
 }
 
-.cardList{
-  gap:15px;
+.searchInput{
+  margin-bottom: 6px;
+}
+
+.img-div{
+  text-align:center;
 }

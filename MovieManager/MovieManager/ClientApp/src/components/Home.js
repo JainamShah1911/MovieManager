@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
-import { Button, Card, CardBody, CardHeader, CardImg, CardText, CardTitle, FormGroup } from 'reactstrap';
-import { Img } from 'react-image'
-import DefaultImage from "../assets/Coming-Soon.jpg";
 import debounce from 'lodash.debounce';
+import React, { Component } from 'react';
+import { Img } from 'react-image';
+import DefaultImage from "../assets/Coming-Soon.jpg";
 
 export class Home extends Component {
   static displayName = Home.name;
@@ -19,26 +18,24 @@ export class Home extends Component {
   render() {
     return (
       <div className="container-fluid">
-        <div className="form-outline">
+        <div className="form-outline searchInput">
           <input type="search" id="form1" className="form-control" placeholder="Search" aria-label="Search" onChange={this.handleInputChange} />
         </div>
-        <div className="row cardList">
+        <div className="row">
           {this.state.movies.length !== 0 ? (
             this.state.movies && this.state.movies.map((card, key) => (
-              <Card bg="dark" className='col-md-3' style={{ width: '18rem', padding: 0 }}>
-                <CardHeader>{card.title}</CardHeader>
-                <Img className="movieImage" src={[card.image, DefaultImage]} />
-                <CardBody>
-                  <CardTitle></CardTitle>
-                  <CardText>
-
-                  </CardText>
-                  <div className='column '>
-                    <Button className='col-md-5 col-md-offset-1' variant="primary">View</Button>
-                    <Button className='col-md-5 col-md-offset-1' variant="primary">Edit</Button>
+              <div className="col-md-4 col-lg-3">
+                <div className="card inverted my-3">
+                  <div className="card-thumbnail img-div">
+                    <Img className="movieImage img-fluid" src={[card.image, DefaultImage]} />
                   </div>
-                </CardBody>
-              </Card>
+                  <div className="card-body">
+                    <h3 className="card-title"><a href="#" className="text-secondary">{card.title}</a></h3>
+                    <p className="card-text"></p>
+                    <a href="#" className="btn btn-danger">Read More</a>
+                  </div>
+                </div>
+              </div>
             ))
           ) : (
             <h1>{this.state.loading ? 'Loading...' : 'No Results'}</h1>
