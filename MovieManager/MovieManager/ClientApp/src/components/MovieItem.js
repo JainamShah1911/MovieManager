@@ -1,0 +1,39 @@
+import React, { Component } from 'react';
+import { Img } from 'react-image';
+import DefaultImage from "../assets/Coming-Soon.jpg";
+
+export class MovieItem extends Component {
+  static displayName = MovieItem.name;
+
+  constructor(props) {
+    super(props);
+    //this.state = { currentCount: 0 };
+    //this.incrementCounter = this.incrementCounter.bind(this);
+  }
+
+  render() {
+    const { movie, handleEdit, handleDelete } = this.props;
+    return (
+      <div className="col-md-4 col-lg-3">
+        <div className="card inverted my-3">
+          <div className="card-thumbnail img-div">
+            <Img className="movieImage img-fluid" src={[movie.image, DefaultImage]} />
+          </div>
+          <div className="card-body">
+            <h3 className="card-title"><a href="#" className="text-secondary">{movie.title}</a></h3>
+            <p className="card-text"></p>
+            <button
+              className="btn btn-secondary mr-2"
+              onClick={() => handleEdit(movie)}
+            >
+              Edit
+            </button>
+            <button className="btn btn-danger" onClick={() => handleDelete(movie)}>
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}

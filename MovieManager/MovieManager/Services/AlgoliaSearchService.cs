@@ -23,6 +23,7 @@ namespace MovieManager.Services
             SearchIndex index = client.InitIndex(searchIndex);
             dto.Query.Length = dto.Top;
             dto.Query.Offset = dto.Skip;
+            dto.Query.SearchQuery = dto.SearchKeyword;
             try
             {
                 var response = await index.SearchAsync<Movie>(dto.Query);
