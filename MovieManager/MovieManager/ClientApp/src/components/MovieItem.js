@@ -4,13 +4,6 @@ import DefaultImage from "../assets/Coming-Soon.jpg";
 
 export class MovieItem extends Component {
   static displayName = MovieItem.name;
-
-  constructor(props) {
-    super(props);
-    //this.state = { currentCount: 0 };
-    //this.incrementCounter = this.incrementCounter.bind(this);
-  }
-
   render() {
     const { movie, handleEdit, handleDelete } = this.props;
     return (
@@ -22,13 +15,10 @@ export class MovieItem extends Component {
           <div className="card-body">
             <h3 className="card-title"><a href="#" className="text-secondary">{movie.title}</a></h3>
             <p className="card-text"></p>
-            <button
-              className="btn btn-secondary mr-2"
-              onClick={() => handleEdit(movie)}
-            >
+            <button className="btn btn-secondary mr-2" onClick={() => handleEdit(movie)}>
               Edit
             </button>
-            <button className="btn btn-danger" onClick={() => handleDelete(movie)}>
+            <button className="btn btn-danger" onClick={() => handleDelete(movie.objectId)}>
               Delete
             </button>
           </div>

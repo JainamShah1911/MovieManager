@@ -2,9 +2,8 @@
 
 namespace MovieManager.Services
 {
-    public interface IAlgoliaSearchService
+    public interface IMovieService
     {
-        Task<SearchResponseDto?> SearchAsync(SearchRequestDto dto);
         Task<string> DeleteAsync(string id);
         Task UpdateAsync(MovieUpdate movie);
         Task<string> CreateAsync(MovieCreate create);

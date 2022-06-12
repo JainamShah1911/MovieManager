@@ -32,7 +32,48 @@ namespace MovieManager.Services
                     hits = response.Hits
                 };
             }
-            catch(Exception e)
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public async Task<string> DeleteAsync(string id)
+        {
+            SearchIndex index = client.InitIndex(searchIndex);
+            try
+            {
+                await index.DeleteObjectAsync(id);
+                return id;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public async Task UpdateAsync(MovieUpdate movie)
+        {
+            SearchIndex index = client.InitIndex(searchIndex);
+            try
+            {
+                await index.PartialUpdateObjectAsync(movie);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public async Task<string> CreateAsync(MovieCreate create)
+        {
+            SearchIndex index = client.InitIndex(searchIndex);
+            try
+            {
+                var res = await index.SaveObjectAsync(create, new Algolia.Search.Http.RequestOptions(){ QueryParameters = new Dictionary<string, string> { { "autoGenerateObjectIDIfNotExist", "true" } } });
+                return res.Responses.FirstOrDefault().ObjectIDs.First();
+            }
+            catch (Exception e)
             {
                 throw new Exception(e.Message);
             }

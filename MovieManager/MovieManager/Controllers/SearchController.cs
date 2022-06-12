@@ -5,7 +5,7 @@ using MovieManager.Services;
 namespace MovieManager.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("search")]
     public class SearchController : ControllerBase
     {
         private readonly IAlgoliaSearchService _algoliaSearchService;
@@ -18,7 +18,6 @@ namespace MovieManager.Controllers
         [HttpPost]
         public async Task<IActionResult> search(SearchRequestDto dto)
         {
-            //var dto = new SearchRequestDto() { Top = 10, Skip = 50, Query = new Algolia.Search.Models.Search.Query() };
             var result = await _algoliaSearchService.SearchAsync(dto);
 
             return Ok(result);

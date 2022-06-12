@@ -6,7 +6,7 @@ import './custom.css';
 
 
 export default class App extends Component {
-  static displayName = App.name;
+  //static displayName = App.name;
   state = { movies: [], loading: true, searchInput: "", skip: 0, top: 30 };
 
   componentDidMount() {
@@ -39,11 +39,15 @@ export default class App extends Component {
     // alert("Edit :: " + JSON.stringify(item));
   };
 
-  handleDelete = (item) => {
-    // alert("Delete :: " + JSON.stringify(item));
-    // axios
-    //   .delete(`/api/v1/tasks/${item._id}/`)
-    //   .then((res) => this.refreshList());
+  async handleDelete(id) {
+    const response = await fetch(`movies/${id}`, {
+      method: 'DELETE', body: null, headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+    });
+    const data = await response.json();
+    this.setState({ movies: data.hits, loading: false });
   };
 
   render() {
