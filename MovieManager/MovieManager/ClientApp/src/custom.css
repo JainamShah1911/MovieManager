@@ -20,10 +20,11 @@ code {
   align-self: center;
 }
 
-.searchInput{
-  margin-bottom: 6px;
-}
-
 .img-div{
   text-align:center;
+}
+
+.create-button {
+  align-self: center;
+  text-align: right;
 }

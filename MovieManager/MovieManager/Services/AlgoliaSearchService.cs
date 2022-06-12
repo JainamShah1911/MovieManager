@@ -70,7 +70,7 @@ namespace MovieManager.Services
             SearchIndex index = client.InitIndex(searchIndex);
             try
             {
-                var res = await index.SaveObjectAsync(create, new Algolia.Search.Http.RequestOptions(){ QueryParameters = new Dictionary<string, string> { { "autoGenerateObjectIDIfNotExist", "true" } } });
+                var res = await index.SaveObjectAsync(create, autoGenerateObjectId: true);
                 return res.Responses.FirstOrDefault().ObjectIDs.First();
             }
             catch (Exception e)

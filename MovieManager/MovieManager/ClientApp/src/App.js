@@ -7,7 +7,7 @@ import './custom.css';
 
 export default class App extends Component {
   //static displayName = App.name;
-  state = { movies: [], loading: true, searchInput: "", skip: 0, top: 30 };
+  state = { isEditing: false, movies: [], loading: true, searchInput: "", skip: 0, top: 30, movieInView: null };
 
   componentDidMount() {
     this.populateMovieData();
@@ -35,19 +35,39 @@ export default class App extends Component {
   }
 
   handleEdit = (item) => {
-    //this.setState({ activeItem: item, editItem: true });
-    // alert("Edit :: " + JSON.stringify(item));
+    this.setState({ isEditing: true, movieInView: item });
   };
 
+  cancelEdit = () => {
+    this.setState({ isEditing: false, movieInView: null });
+  }
+
   async handleDelete(id) {
-    const response = await fetch(`movies/${id}`, {
+    await fetch(`movies/${id}`, {
       method: 'DELETE', body: null, headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
     });
-    const data = await response.json();
-    this.setState({ movies: data.hits, loading: false });
+  };
+
+  formSubmit = async (movie) => {
+    if (movie.objectId != null) {
+      await fetch(`movies`, {
+        method: 'PUT', body: `{"title": "${movie.title}", "objectId": "${movie.objectId}"}`, headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      });
+    }
+    else {
+      await fetch(`movies`, {
+        method: 'POST', body: `{"title": "${movie.title}"}`, headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      });
+    }
   };
 
   render() {
@@ -58,6 +78,10 @@ export default class App extends Component {
           handleSearchInputChange={this.handleInputChange}
           handleEdit={this.handleEdit}
           handleDelete={this.handleDelete}
+          cancelEdit={this.cancelEdit}
+          isEditing={this.state.isEditing}
+          movieInView={this.state.movieInView}
+          formSubmit={this.formSubmit}
         />
       </Layout>
     );
