@@ -49,6 +49,7 @@ export default class App extends Component {
         'Content-Type': 'application/json'
       },
     });
+    this.populateMovieData();
   };
 
   formSubmit = async (movie) => {
@@ -68,6 +69,8 @@ export default class App extends Component {
         },
       });
     }
+    this.setState({ isEditing: false, movieInView: null });
+    this.populateMovieData();
   };
 
   render() {

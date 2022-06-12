@@ -23,10 +23,10 @@ export class NavMenu extends Component {
 
   render () {
     return (
-      <header>
+      <header className='header'>
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
           <Container>
-            <NavbarBrand tag={Link} to="/">Movie Manager</NavbarBrand>
+            <NavbarBrand className='navbar-text-custom'>Movie Manager</NavbarBrand>
           </Container>
         </Navbar>
       </header>

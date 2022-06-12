@@ -7,6 +7,18 @@ code {
   color: #E01A76;
 }
 
+.rootClass {
+  background-color: rgb(246 248 250);
+}
+
+.header {
+  background-color: #24292f;
+}
+
+.navbar-text-custom {
+  color: #fff !important;
+}
+
 .btn-primary {
   color: #fff;
   background-color: #1b6ec2;
@@ -14,10 +26,14 @@ code {
 }
 
 .movieImage{
-  height: 70%;
-  width: 70%;
+  height: 230px;
+  /* width: 70%;
   padding: 3px;
-  align-self: center;
+  align-self: center; */
+}
+
+.my-card {
+  width: 12rem;
 }
 
 .img-div{
