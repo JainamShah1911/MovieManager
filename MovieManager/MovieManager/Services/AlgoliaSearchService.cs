@@ -1,4 +1,5 @@
 ﻿using Algolia.Search.Clients;
+using Algolia.Search.Models.Search;
 using MovieManager.Models;
 
 namespace MovieManager.Services
@@ -21,12 +22,15 @@ namespace MovieManager.Services
         {
 
             SearchIndex index = client.InitIndex(searchIndex);
-            dto.Query.Length = dto.Top;
-            dto.Query.Offset = dto.Skip;
-            dto.Query.SearchQuery = dto.SearchKeyword;
+            var query = new Query()
+            {
+                Length = dto.Top,
+                Offset = dto.Skip,
+                SearchQuery = dto.SearchKeyword
+            };
             try
             {
-                var response = await index.SearchAsync<Movie>(dto.Query);
+                var response = await index.SearchAsync<Movie>(query);
                 return new SearchResponseDto()
                 {
                     hits = response.Hits

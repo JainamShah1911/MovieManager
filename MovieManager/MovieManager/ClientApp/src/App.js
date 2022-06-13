@@ -23,17 +23,6 @@ export default class App extends Component {
     this.populateMovieData()
   }, 1000);
 
-  async populateMovieData() {
-    const response = await fetch('search', {
-      method: 'POST', body: `{ "skip": "${this.state.skip}", "top": "${this.state.top}", "searchKeyword":"${this.state.searchInput}" }`, headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-    });
-    const data = await response.json();
-    this.setState({ movies: data.hits, loading: false });
-  }
-
   handleEdit = (item) => {
     this.setState({ isEditing: true, movieInView: item });
   };
@@ -50,35 +39,46 @@ export default class App extends Component {
     this.setState({ loading: true, skip: this.state.skip - this.state.top }, this.populateMovieData);
   }
 
+  // fetch calls
+  getHeaders() {
+    return {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    };
+  }
+
+  async populateMovieData() {
+    const response = await fetch('search', {
+      method: 'POST', body: `{ "skip": "${this.state.skip}", "top": "${this.state.top}", "searchKeyword":"${this.state.searchInput}" }`, headers: this.getHeaders(),
+    });
+    const data = await response.json();
+    this.setState({ movies: data.hits, loading: false });
+  }
+
   async handleDelete(id) {
     await fetch(`movies/${id}`, {
-      method: 'DELETE', body: null, headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
+      method: 'DELETE', body: null, headers: this.getHeaders(),
+    }).then(() => {
+      this.populateMovieData();
     });
-    this.populateMovieData();
   };
 
   formSubmit = async (movie) => {
     if (movie.objectId != null) {
       await fetch(`movies`, {
-        method: 'PUT', body: `{"title": "${movie.title}", "objectId": "${movie.objectId}"}`, headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
+        method: 'PUT', body: `{"title": "${movie.title}", "objectId": "${movie.objectId}"}`, headers: this.getHeaders(),
+      }).then(() => {
+        this.populateMovieData();
       });
     }
     else {
       await fetch(`movies`, {
-        method: 'POST', body: `{"title": "${movie.title}"}`, headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
+        method: 'POST', body: `{"title": "${movie.title}"}`, headers: this.getHeaders(),
+      }).then(() => {
+        this.populateMovieData();
       });
     }
     this.setState({ isEditing: false, movieInView: null });
-    this.populateMovieData();
   };
 
   render() {
