@@ -58,5 +58,5 @@ export class MovieItemModal extends Component {
             "title": e.target.title.value
         }
         this.props.formSubmit(movie);
-      }
+    }
 }

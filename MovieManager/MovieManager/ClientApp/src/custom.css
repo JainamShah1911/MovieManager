@@ -26,10 +26,13 @@ code {
 }
 
 .movieImage{
-  height: 230px;
-  /* width: 70%;
-  padding: 3px;
-  align-self: center; */
+  height: 275px;
+}
+
+.movie-name{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .my-card {
@@ -43,4 +46,8 @@ code {
 .create-button {
   align-self: center;
   text-align: right;
+}
+
+.paginator{
+  padding: 0 23px 15px 23px;
 }

@@ -42,6 +42,14 @@ export default class App extends Component {
     this.setState({ isEditing: false, movieInView: null });
   }
 
+  next = () => {
+    this.setState({ loading: true, skip: this.state.skip + this.state.top }, this.populateMovieData);
+  };
+
+  previous = () => {
+    this.setState({ loading: true, skip: this.state.skip - this.state.top }, this.populateMovieData);
+  }
+
   async handleDelete(id) {
     await fetch(`movies/${id}`, {
       method: 'DELETE', body: null, headers: {
@@ -86,6 +94,16 @@ export default class App extends Component {
           movieInView={this.state.movieInView}
           formSubmit={this.formSubmit}
         />
+        <footer className="footer">
+          <div className='row paginator'>
+            <button className="btn btn-secondary col-md-2 btn-sm" disabled={this.state.skip == 0} onClick={() => this.previous()}>
+              Previous
+            </button>
+            <button className="btn btn-secondary col-md-2 btn-sm offset-8 btn-sm" disabled={this.state.movies?.length < 30} onClick={() => this.next()}>
+              Next
+            </button>
+          </div>
+        </footer>
       </Layout>
     );
   }
