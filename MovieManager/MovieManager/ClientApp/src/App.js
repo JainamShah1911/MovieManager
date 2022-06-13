@@ -59,23 +59,31 @@ export default class App extends Component {
     await fetch(`movies/${id}`, {
       method: 'DELETE', body: null, headers: this.getHeaders(),
     }).then(() => {
-      this.populateMovieData();
+      setTimeout(() => {
+        this.populateMovieData();
+      }, 2000); 
     });
   };
 
   formSubmit = async (movie) => {
     if (movie.objectId != null) {
       await fetch(`movies`, {
-        method: 'PUT', body: `{"title": "${movie.title}", "objectId": "${movie.objectId}"}`, headers: this.getHeaders(),
-      }).then(() => {
-        this.populateMovieData();
+        method: 'PUT', body: JSON.stringify(movie), headers: this.getHeaders(),//`{"title": "${movie.title}", "objectId": "${movie.objectId}"}`, headers: this.getHeaders(),
+      }).then((response) => {
+        if(response.status == 200){
+          setTimeout(() => {
+            this.populateMovieData();
+          }, 2000); 
+        }
       });
     }
     else {
       await fetch(`movies`, {
-        method: 'POST', body: `{"title": "${movie.title}"}`, headers: this.getHeaders(),
+        method: 'POST', body: JSON.stringify(movie), headers: this.getHeaders(),
       }).then(() => {
-        this.populateMovieData();
+        setTimeout(() => {
+          this.populateMovieData();
+        }, 2000); 
       });
     }
     this.setState({ isEditing: false, movieInView: null });

@@ -32,6 +32,29 @@ export class MovieItemModal extends Component {
                                     placeholder="Title of the movie"
                                     required
                                 />
+                                <Label for="year">Year</Label>
+                                <Input
+                                    type="number"
+                                    name="year"
+                                    defaultValue={movieInView ? movieInView.year : ""}
+                                    placeholder="Movie release year"
+                                    required max={new Date().getFullYear()+1}
+                                />
+                                <Label for="rating">Rating (0-5)</Label>
+                                <Input
+                                    type="number"
+                                    name="rating"
+                                    defaultValue={movieInView ? movieInView.rating : 0}
+                                    placeholder="Movie rating"
+                                    required max={5}
+                                />
+                                <Label for="image">Poster Image</Label>
+                                <Input
+                                    type="text"
+                                    name="image"
+                                    defaultValue={movieInView ? movieInView.image : ""}
+                                    placeholder="Poster image"
+                                />
                             </FormGroup>
                         </ModalBody>
                         <ModalFooter>
@@ -55,7 +78,10 @@ export class MovieItemModal extends Component {
         e.preventDefault();
         const movie = {
             "objectId": this.props.movieInView.objectId ?? null,
-            "title": e.target.title.value
+            "title": e.target.title.value,
+            "year": e.target.year.value,
+            "rating": e.target.rating.value,
+            "image": e.target.image.value
         }
         this.props.formSubmit(movie);
     }
