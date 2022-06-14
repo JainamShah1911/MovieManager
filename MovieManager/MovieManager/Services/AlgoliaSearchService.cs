@@ -33,7 +33,8 @@ namespace MovieManager.Services
                 var response = await index.SearchAsync<Movie>(query);
                 return new SearchResponseDto()
                 {
-                    hits = response.Hits
+                    hits = response.Hits,
+                    totalHits = response.NbHits
                 };
             }
             catch (Exception e)

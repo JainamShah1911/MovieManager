@@ -7,7 +7,7 @@ import './custom.css';
 
 export default class App extends Component {
   //static displayName = App.name;
-  state = { isEditing: false, movies: [], loading: true, searchInput: "", skip: 0, top: 30, movieInView: null };
+  state = { isEditing: false, movies: [], totalHits: 0, loading: true, searchInput: "", skip: 0, top: 30, movieInView: null };
 
   componentDidMount() {
     this.populateMovieData();
@@ -55,20 +55,22 @@ export default class App extends Component {
     this.setState({ movies: data.hits, loading: false });
   }
 
-  async handleDelete(id) {
+  handleDelete = async (id) => {
     await fetch(`movies/${id}`, {
-      method: 'DELETE', body: null, headers: this.getHeaders(),
-    }).then(() => {
-      setTimeout(() => {
-        this.populateMovieData();
-      }, 2000); 
+      method: 'DELETE', body: null
+    }).then((response) => {
+      if(response.status == 200){
+        this.setState({
+          movies: this.state.movies.filter(i => i.objectId != id)
+        });
+      }
     });
   };
 
   formSubmit = async (movie) => {
     if (movie.objectId != null) {
       await fetch(`movies`, {
-        method: 'PUT', body: JSON.stringify(movie), headers: this.getHeaders(),//`{"title": "${movie.title}", "objectId": "${movie.objectId}"}`, headers: this.getHeaders(),
+        method: 'PUT', body: JSON.stringify(movie), headers: this.getHeaders(),
       }).then((response) => {
         if(response.status == 200){
           setTimeout(() => {
@@ -107,7 +109,7 @@ export default class App extends Component {
             <button className="btn btn-secondary col-md-2 btn-sm" disabled={this.state.skip == 0} onClick={() => this.previous()}>
               Previous
             </button>
-            <button className="btn btn-secondary col-md-2 btn-sm offset-8 btn-sm" disabled={this.state.movies?.length < 30} onClick={() => this.next()}>
+            <button className="btn btn-secondary col-md-2 btn-sm offset-8 btn-sm" disabled={(this.state.skip + this.state.top) < 30} onClick={() => this.next()}>
               Next
             </button>
           </div>
