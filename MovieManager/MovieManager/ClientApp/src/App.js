@@ -1,13 +1,15 @@
 import debounce from 'lodash.debounce';
 import React, { Component } from 'react';
+import { Alert } from 'reactstrap';
 import { Layout } from './components/Layout';
 import { MovieList } from './components/MovieList';
 import './custom.css';
+import confirm from "reactstrap-confirm";
 
 
 export default class App extends Component {
   //static displayName = App.name;
-  state = { isEditing: false, movies: [], totalHits: 0, loading: true, searchInput: "", skip: 0, top: 30, movieInView: null };
+  state = { isEditing: false, movies: [], totalHits: 0, loading: true, searchInput: "", skip: 0, top: 30, movieInView: null, showToaster: false, alertMessage: null };
 
   componentDidMount() {
     this.populateMovieData();
@@ -56,15 +58,25 @@ export default class App extends Component {
   }
 
   handleDelete = async (id) => {
-    await fetch(`movies/${id}`, {
-      method: 'DELETE', body: null
-    }).then((response) => {
-      if(response.status == 200){
-        this.setState({
-          movies: this.state.movies.filter(i => i.objectId != id)
-        });
-      }
-    });
+    let shouldDelete = await confirm({
+      title: "Delete Movie ?",
+      message: "Are you sure you want to delete this movie ?",
+      confirmText: "Delete",
+      confirmColor: "danger",
+      cancelColor: "primary"
+    })
+    if (shouldDelete) {
+      await fetch(`movies/${id}`, {
+        method: 'DELETE', body: null
+      }).then((response) => {
+        if (response.status == 200) {
+          this.setState({
+            movies: this.state.movies.filter(i => i.objectId != id)
+          });
+          this.showAlert("Successfully Deleted Movie");
+        }
+      });
+    }
   };
 
   formSubmit = async (movie) => {
@@ -72,10 +84,11 @@ export default class App extends Component {
       await fetch(`movies`, {
         method: 'PUT', body: JSON.stringify(movie), headers: this.getHeaders(),
       }).then((response) => {
-        if(response.status == 200){
+        if (response.status == 200) {
           setTimeout(() => {
             this.populateMovieData();
-          }, 2000); 
+          }, 2000);
+          this.showAlert("Successfully Updated Movie");
         }
       });
     }
@@ -85,15 +98,27 @@ export default class App extends Component {
       }).then(() => {
         setTimeout(() => {
           this.populateMovieData();
-        }, 2000); 
+        }, 2000);
+        this.showAlert("Successfully Created Movie");
       });
     }
     this.setState({ isEditing: false, movieInView: null });
   };
 
+  showAlert = (message) => {
+    this.setState({ showToaster: true, alertMessage: message }, () => {
+      window.setTimeout(() => {
+        this.setState({ showToaster: false, alertMessage: null })
+      }, 2000)
+    });
+  }
+
   render() {
     return (
       <Layout>
+        <Alert className='alert-custom' color="info" isOpen={this.state.showToaster} >
+          {this.state.alertMessage}
+        </Alert>
         <MovieList
           movies={this.state.movies}
           handleSearchInputChange={this.handleInputChange}

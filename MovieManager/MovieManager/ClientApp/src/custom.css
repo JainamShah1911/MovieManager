@@ -25,11 +25,11 @@ code {
   border-color: #1861ac;
 }
 
-.movieImage{
+.movieImage {
   height: 275px;
 }
 
-.movie-name{
+.movie-name {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -39,8 +39,8 @@ code {
   width: 12rem;
 }
 
-.img-div{
-  text-align:center;
+.img-div {
+  text-align: center;
 }
 
 .create-button {
@@ -48,6 +48,13 @@ code {
   text-align: right;
 }
 
-.paginator{
+.paginator {
   padding: 0 23px 15px 23px;
+}
+
+.alert-custom {
+  position: fixed;
+  right: 18px;
+  width: 142px;
+  text-align: center;
 }
