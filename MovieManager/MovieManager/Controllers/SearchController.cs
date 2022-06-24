@@ -15,6 +15,10 @@ namespace MovieManager.Controllers
             _algoliaSearchService = algoliaSearchService;
         }
 
+        /// <summary>
+        /// Allows you to search over movies using a text phrase
+        /// </summary>
+        /// <param name="searchRequest"></param>
         [HttpPost]
         public async Task<IActionResult> search(SearchRequestDto dto)
         {

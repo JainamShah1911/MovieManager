@@ -15,13 +15,21 @@ namespace MovieManager.Controllers
            _movieService = movieService;
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(string id)
+        /// <summary>
+        /// Creates a new Movie
+        /// </summary>
+        /// <param name="movie">create request</param>
+        [HttpPost]
+        public async Task<IActionResult> Create(MovieCreate movie)
         {
-           await _movieService.DeleteAsync(id);
-           return Ok(id);
+            var id = await _movieService.CreateAsync(movie);
+            return Ok(id);
         }
 
+        /// <summary>
+        /// Partially updates movie data as per the request
+        /// </summary>
+        /// <param name="movie">update request</param>
         [HttpPut]
         public async Task<IActionResult> Update(MovieUpdate movie)
         {
@@ -29,11 +37,15 @@ namespace MovieManager.Controllers
             return Ok();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create(MovieCreate movie)
+        /// <summary>
+        /// Deletes a movie as per the Id (objectId) provided
+        /// </summary>
+        /// <param name="id">objectId of movie</param>
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
         {
-            var id = await _movieService.CreateAsync(movie);
-            return Ok(id);
+           await _movieService.DeleteAsync(id);
+           return Ok(id);
         }
     }
 }

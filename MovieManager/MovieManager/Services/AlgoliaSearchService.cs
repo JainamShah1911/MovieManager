@@ -18,15 +18,15 @@ namespace MovieManager.Services
             searchIndex = keys["index"];
         }
 
-        public async Task<SearchResponseDto?> SearchAsync(SearchRequestDto dto)
+        public async Task<SearchResponseDto?> SearchAsync(SearchRequestDto searchRequest)
         {
 
             SearchIndex index = client.InitIndex(searchIndex);
             var query = new Query()
             {
-                Length = dto.Top,
-                Offset = dto.Skip,
-                SearchQuery = dto.SearchKeyword
+                Length = searchRequest.Top,
+                Offset = searchRequest.Skip,
+                SearchQuery = searchRequest.SearchKeyword
             };
             try
             {
