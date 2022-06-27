@@ -9,8 +9,8 @@ export class MovieItemModal extends Component {
             <div>
                 <Modal toggle={() => cancelEdit()} isOpen={isEditing}>
                     <div className=" modal-header">
-                        <h5 className=" modal-title" id="exampleModalLabel">
-                            {movieInView?.title}
+                        <h5 className=" modal-title" id="modal-title">
+                            {movieInView?.title ? "Edit" : "Create"}
                         </h5>
                         <button
                             aria-label="Close"

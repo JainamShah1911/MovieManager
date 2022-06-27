@@ -21,7 +21,7 @@ export class MovieList extends Component {
               onClick={handleEdit}>Create</Button>
           </div>
         </div>
-        <div className="row">
+        <div className="row movie-list-container">
           {movies.length !== 0 ? (
             movies.map((movie, key) => (
               <MovieItem movie={movie}

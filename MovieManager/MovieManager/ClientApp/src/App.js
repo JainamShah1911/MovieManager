@@ -54,13 +54,14 @@ export default class App extends Component {
       method: 'POST', body: `{ "skip": "${this.state.skip}", "top": "${this.state.top}", "searchKeyword":"${this.state.searchInput}" }`, headers: this.getHeaders(),
     });
     const data = await response.json();
-    this.setState({ movies: data.hits, loading: false });
+    this.setState({ movies: data.hits, totalHits: data.totalHits, loading: false });
   }
 
   handleDelete = async (id) => {
+    const movieTitle = this.state.movies.find(t => t.objectId == id)?.title
     let shouldDelete = await confirm({
-      title: "Delete Movie ?",
-      message: "Are you sure you want to delete this movie ?",
+      title: `Delete ${movieTitle} ?`,
+      message: `Are you sure you want to delete ${movieTitle} ?`,
       confirmText: "Delete",
       confirmColor: "danger",
       cancelColor: "primary"
@@ -71,7 +72,8 @@ export default class App extends Component {
       }).then((response) => {
         if (response.status == 200) {
           this.setState({
-            movies: this.state.movies.filter(i => i.objectId != id)
+            movies: this.state.movies.filter(i => i.objectId != id),
+            totalHits: this.state.totalHits - 1
           });
           this.showAlert("Successfully Deleted Movie");
         }
@@ -131,10 +133,10 @@ export default class App extends Component {
         />
         <footer className="footer">
           <div className='row paginator'>
-            <button className="btn btn-secondary col-md-2 btn-sm" disabled={this.state.skip == 0} onClick={() => this.previous()}>
+            <button className="btn btn-secondary col-md-2 btn-sm" disabled={this.state.totalHits < 30 || this.state.skip == 0} onClick={() => this.previous()}>
               Previous
             </button>
-            <button className="btn btn-secondary col-md-2 btn-sm offset-8 btn-sm" disabled={(this.state.skip + this.state.top) < 30} onClick={() => this.next()}>
+            <button className="btn btn-secondary col-md-2 btn-sm offset-8 btn-sm" disabled={this.state.totalHits < 30 || (this.state.skip + this.state.top) > this.state.totalHits} onClick={() => this.next()}>
               Next
             </button>
           </div>
